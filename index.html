@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE MIRROR TEST | Tự soi chiếu bản thân</title>
+<style>
+:root{--bg:#0b1020;--panel:#131b30;--panel2:#19243d;--text:#f3f5fb;--muted:#a8b2ca;--accent:#8b9cff;--line:#2c3958;--good:#65d6a3}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#1a2850 0,#0b1020 60%);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+main{max-width:760px;margin:auto;padding:24px 16px 50px}.card{background:rgba(19,27,48,.96);border:1px solid var(--line);border-radius:22px;padding:clamp(20px,5vw,36px);box-shadow:0 18px 60px #0004}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--muted);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase}.pill{border:1px solid var(--line);border-radius:99px;padding:5px 11px;letter-spacing:0;text-transform:none}
+h1{font-size:clamp(2.1rem,7vw,3.5rem);line-height:1.05;letter-spacing:-.04em;margin:18px 0 12px}h2{font-size:clamp(1.35rem,4vw,1.9rem);line-height:1.25;margin:8px 0 14px}h3{margin:0 0 10px}.muted{color:var(--muted)}.lead{font-size:1.1rem}.panel{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:18px;margin:20px 0}
+button{font:inherit;font-weight:700;border:1px solid var(--line);border-radius:13px;padding:13px 17px;background:var(--panel2);color:var(--text);cursor:pointer;transition:.15s}button:hover{filter:brightness(1.12);transform:translateY(-1px)}button:disabled{opacity:.35;cursor:not-allowed;transform:none}.primary{background:var(--accent);color:#0b1020;border-color:transparent;width:100%}
+label.consent{display:flex;gap:12px;align-items:flex-start;margin:18px 0;font-size:.92rem}input[type=checkbox]{margin-top:5px;accent-color:var(--accent)}
+.progressrow{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:9px}.track{height:8px;border-radius:99px;background:#283451;overflow:hidden;margin-bottom:26px}.fill{height:100%;width:0;background:var(--accent);transition:width .25s}
+.category{font-size:.75rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:10px}
+.options{display:grid;gap:10px;margin:22px 0}.option{display:flex;align-items:flex-start;gap:13px;text-align:left;width:100%;font-weight:500;padding:15px;background:#111a2e}.option.selected{border:2px solid var(--accent);background:#222e50}.letter{flex:0 0 30px;height:30px;border:1px solid var(--line);border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:.85rem}
+.nav{display:flex;gap:12px}.nav button{flex:1}.score{font-size:4rem;font-weight:900;letter-spacing:-.05em;text-align:center;margin:10px}.center{text-align:center}.badge{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:5px 12px;color:var(--good);font-size:.8rem;font-weight:800}.trait{margin:15px 0}.traithead{display:flex;justify-content:space-between;gap:12px;font-size:.9rem;margin-bottom:7px}.traitbar{height:9px;background:#283451;border-radius:99px;overflow:hidden}.traitbar div{height:100%;background:var(--good)}
+.hidden{display:none!important}.small{font-size:.82rem}.footer{text-align:center;color:var(--muted);font-size:.78rem;margin-top:20px}
+@media(max-width:480px){main{padding:12px 10px 30px}.top{font-size:.68rem}.nav{gap:8px}.nav button{padding:12px 8px}}
+</style>
+</head>
+<body>
+<main>
+<section class="card" id="home">
+<div class="top"><span>Self-reflection experience</span><span class="pill">10 câu · 3–5 phút</span></div>
+<div style="font-size:2.8rem;margin-top:22px">🪞</div>
+<h1>THE MIRROR<br>TEST</h1>
+<p class="lead"><b>Bạn có thật sự sống đúng với điều mình tin?</b></p>
+<p class="muted">24 giờ qua, bạn đã lựa chọn như thế nào khi không ai nhìn thấy, khi mắc lỗi, hoặc khi phải đánh đổi lợi ích của bản thân?</p>
+<div class="panel"><h3>Trước khi bắt đầu</h3><ul class="muted"><li>Trả lời dựa trên hành vi thực tế trong 24 giờ qua.</li><li>Không có câu trả lời nào khiến bạn trở thành người tốt hay xấu tuyệt đối.</li><li>Kết quả là trò chơi tự suy ngẫm, không phải bài kiểm tra tâm lý được kiểm định.</li></ul></div>
+<label class="consent"><input id="agree" type="checkbox"><span>Tôi sẽ trả lời trung thực và không sử dụng kết quả để phán xét người khác.</span></label>
+<button class="primary" id="start" disabled>Bắt đầu soi chiếu bản thân →</button>
+<p class="footer">Không yêu cầu họ tên · Câu trả lời được xử lý trên thiết bị của bạn</p>
+</section>
+
+<section class="card hidden" id="quiz">
+<div class="progressrow"><b id="count">Câu 1 / 10</b><span class="muted" id="pct">10%</span></div>
+<div class="track"><div class="fill" id="fill"></div></div>
+<div class="category" id="cat"></div><h2 id="question"></h2><p class="muted small">Chọn câu gần nhất với hành động thực tế của bạn.</p>
+<div class="options" id="options"></div>
+<div class="nav"><button id="back">← Trước</button><button class="primary" id="next">Tiếp theo →</button></div>
+<p class="footer">Hãy chọn theo hành động thực tế, không phải đáp án nghe hay nhất.</p>
+</section>
+
+<section class="card hidden" id="result">
+<div class="center"><div style="font-size:3rem" id="emoji">🪞</div><div class="category">Kết quả tự soi chiếu</div><h2 id="title"></h2><div class="score" id="score"></div><span class="badge">Điểm tự đánh giá</span></div>
+<div class="panel"><h3>Lời phán quyết dành cho bạn</h3><p id="verdict"></p></div>
+<div class="panel"><h3>Điều bạn nên suy ngẫm</h3><p class="muted" id="reflection"></p></div>
+<div class="panel"><h3>Bản đồ 5 phẩm chất</h3><div id="traits"></div></div>
+<div class="nav"><button class="primary" id="copy">Sao chép kết quả</button><button id="restart">Làm lại</button></div>
+<p class="footer">Đây là trò chơi giáo dục, không đánh giá tư cách đảng viên hay chẩn đoán tâm lý.</p>
+</section>
+</main>
+<script>
+const questions=[
+{cat:'01 · Trung thực và kỷ luật',q:'Khi không ai kiểm tra, bạn là ai?',o:['Tự giác hoàn thành đúng như đã dự định.','Hoàn thành, nhưng phải tự nhắc mình nhiều lần.','Trì hoãn, chỉ làm khi gần đến hạn hoặc có người nhắc.','Biết cần làm nhưng vẫn bỏ qua, sau đó tự tìm lý do để thấy việc đó không nghiêm trọng.'],t:0},
+{cat:'02 · Tự phê bình',q:'Bạn mắc lỗi nhưng không ai phát hiện. Bạn đã làm gì?',o:['Chủ động thừa nhận và tìm cách sửa lỗi.','Tự nhận ra lỗi, sửa lại nhưng không nói với ai.','Để nguyên vì nghĩ không ai biết thì cũng không ảnh hưởng nhiều.','Tìm cách giải thích để lỗi đó có vẻ không hoàn toàn thuộc về mình.'],t:1},
+{cat:'03 · Tự phê bình và phê bình',q:'Khi ai đó góp ý một việc bạn làm chưa tốt, phản ứng gần nhất của bạn là gì?',o:['Nghe hết, xem phần nào đúng và sửa nếu cần.','Ban đầu hơi khó chịu, nhưng sau đó vẫn xem xét.','Tập trung nghĩ cách giải thích tại sao mình làm như vậy.','Cho rằng người góp ý đang soi mói hoặc không hiểu mình.'],t:1},
+{cat:'04 · Trách nhiệm tập thể',q:'Nhóm cần bạn hoàn thành việc chung, nhưng bạn có một việc cá nhân hấp dẫn hơn. Bạn xử lý thế nào?',o:['Hoàn thành phần việc đã cam kết trước.','Trao đổi với nhóm, thống nhất lại trách nhiệm và thời gian.','Ưu tiên việc riêng, sau đó cố gắng bù lại.','Để các thành viên khác tự xoay xở vì nghĩ mình thiếu một chút cũng không sao.'],t:2},
+{cat:'05 · Dũng cảm và trách nhiệm',q:'Bạn nhận thấy một người bạn thân làm điều không đúng. Bạn phản ứng thế nào?',o:['Góp ý thẳng thắn nhưng tôn trọng.','Chọn thời điểm riêng để góp ý.','Im lặng vì không muốn ảnh hưởng mối quan hệ.','Đồng tình hoặc cười theo để tránh bị tách khỏi nhóm.'],t:3},
+{cat:'06 · Tự chỉnh đốn',q:'Khi một việc không diễn ra như mong muốn, bạn thường làm gì đầu tiên?',o:['Xem trách nhiệm của mình ở đâu và tìm cách khắc phục.','Xem xét cả nguyên nhân khách quan lẫn lỗi của bản thân.','Nghĩ nhiều hơn về những người hoặc hoàn cảnh khiến mình thất bại.','Cho rằng mình không thể làm gì khác vì mọi chuyện đều do hoàn cảnh.'],t:1},
+{cat:'07 · Tôn trọng và giúp đỡ',q:'Một người không thân thiết cần sự giúp đỡ nhỏ, không đem lại lợi ích gì cho bạn. Bạn làm gì?',o:['Chủ động giúp trong khả năng.','Giúp khi được nhờ trực tiếp.','Muốn giúp nhưng bỏ qua vì bận hoặc ngại.','Lờ đi vì nghĩ việc đó không liên quan đến mình.'],t:2},
+{cat:'08 · Liêm chính và công bằng',q:'Nhóm được khen nhưng phần đóng góp của bạn ít hơn các thành viên khác. Bạn phản ứng thế nào?',o:['Chủ động ghi nhận công sức của các thành viên khác.','Nhận lời khen chung nhưng không nhận riêng công lao người khác.','Không nói gì dù biết mọi người hiểu nhầm phần đóng góp.','Để người khác nghĩ mình đóng góp nhiều hơn thực tế.'],t:4},
+{cat:'09 · Kỷ luật và nguyên tắc',q:'Làm đúng nguyên tắc sẽ khiến bạn mất thời gian hoặc bị người khác không hài lòng. Bạn làm gì?',o:['Vẫn làm đúng điều đã cam kết hoặc quy định yêu cầu.','Tìm cách linh hoạt nhưng không làm sai nguyên tắc.','Chọn cách thuận tiện hơn dù biết chưa hoàn toàn đúng.','Làm theo số đông để tránh trở thành người khác biệt.'],t:0},
+{cat:'10 · Tự hoàn thiện',q:'Nếu xem lại toàn bộ hành động của mình hôm qua, điều gì khiến bạn suy nghĩ nhiều nhất?',o:['Tôi đã làm đúng điều mình tin là đúng, kể cả khi không ai biết.','Tôi có thiếu sót, nhưng đã nhận ra và muốn sửa.','Tôi biết mình có thể làm tốt hơn, nhưng đã chọn sự dễ dàng.','Tôi biết điều gì đúng, nhưng chưa chắc làm theo khi phải đánh đổi.'],t:1}
+];
+const traitNames=['Nguyên tắc & kỷ luật','Tự phê bình & chỉnh đốn','Trách nhiệm tập thể','Dũng cảm góp ý','Trung thực & liêm chính'];
+const traitQs=[[0,8],[1,2,5,9],[3,6],[4],[7]];
+let idx=0,answers=Array(10).fill(null);
+const $=id=>document.getElementById(id);
+$('agree').onchange=()=> $('start').disabled=!$('agree').checked;
+$('start').onclick=()=>{ $('home').classList.add('hidden');$('quiz').classList.remove('hidden');render();window.scrollTo(0,0)};
+function render(){
+let q=questions[idx];$('count').textContent=`Câu ${idx+1} / 10`;$('pct').textContent=`${(idx+1)*10}%`;$('fill').style.width=(idx+1)*10+'%';$('cat').textContent=q.cat;$('question').textContent=q.q;$('options').innerHTML='';
+q.o.forEach((txt,i)=>{let b=document.createElement('button');b.className='option'+(answers[idx]===i?' selected':'');let l=document.createElement('span');l.className='letter';l.textContent='ABCD'[i];let t=document.createElement('span');t.textContent=txt;b.append(l,t);b.onclick=()=>{answers[idx]=i;render()};$('options').append(b)});
+$('back').disabled=idx===0;$('next').disabled=answers[idx]===null;$('next').textContent=idx===9?'Xem phán quyết →':'Tiếp theo →';
+}
+$('back').onclick=()=>{if(idx){idx--;render();window.scrollTo(0,0)}};
+$('next').onclick=()=>{if(answers[idx]===null)return;if(idx<9){idx++;render();window.scrollTo(0,0)}else showResult()};
+function showResult(){
+let points=answers.reduce((s,a)=>s+4-a,0),pct=Math.round(points/40*100),title,emoji,verdict,reflection;
+if(points>=36){title='Người sống có nguyên tắc';emoji='🏅';verdict='Bạn có xu hướng hành động nhất quán với những điều mình cho là đúng, ngay cả khi không có ai giám sát. Bạn coi trọng trách nhiệm, sự trung thực và việc tự nhìn nhận khuyết điểm.';reflection='Sống đúng không chỉ là biết điều gì đúng, mà còn là duy trì điều đó khi hoàn cảnh trở nên khó khăn nhất. Đừng ngừng tự soi xét chính mình.'}
+else if(points>=30){title='Người biết tự nhìn lại';emoji='🌱';verdict='Bạn có nền tảng trách nhiệm và ý thức về điều đúng, nhưng đôi lúc vẫn bị ảnh hưởng bởi cảm xúc, sự tiện lợi hoặc ý kiến của người khác.';reflection='Biết mình thiếu gì là khởi đầu; hãy biến sự nhận thức đó thành hành động nhất quán.'}
+else if(points>=24){title='Người còn dễ thỏa hiệp';emoji='🪞';verdict='Bạn có thể phân biệt đúng và sai, nhưng khi phải đánh đổi thời gian, lợi ích hoặc mối quan hệ, đôi khi bạn chọn phương án dễ dàng hơn.';reflection='Nguyên tắc chỉ thực sự có ý nghĩa khi bạn phải đánh đổi để giữ vững nó. Hãy chọn một thói quen nhỏ để thay đổi từ ngày mai.'}
+else if(points>=16){title='Đã đến lúc tự chỉnh đốn';emoji='⏰';verdict='Câu trả lời cho thấy có khoảng cách giữa những điều bạn tin là đúng và những việc bạn thực sự làm. Đây là cơ hội để nhìn lại, không phải lý do để tự kết án.';reflection='Thành thật với khuyết điểm là bước đầu tiên. Hãy xác định một hành động cụ thể để sửa ngay hôm nay.'}
+else{title='Chiếc gương không biết nói dối';emoji='🔍';verdict='Có thể bạn đang ưu tiên sự thoải mái, lợi ích cá nhân hoặc sự công nhận từ người khác hơn những nguyên tắc mà chính mình đề cao.';reflection='Một ngày chưa tốt không định nghĩa bạn. Điều quan trọng là lựa chọn của bạn sau khi nhận ra điều cần thay đổi.'}
+$('quiz').classList.add('hidden');$('result').classList.remove('hidden');$('emoji').textContent=emoji;$('title').textContent=title;$('score').textContent=pct+'%';$('verdict').textContent=verdict;$('reflection').textContent=reflection;$('traits').innerHTML='';
+traitQs.forEach((ids,i)=>{let avg=ids.reduce((s,n)=>s+4-answers[n],0)/(ids.length*4)*100;let d=document.createElement('div');d.className='trait';let h=document.createElement('div');h.className='traithead';let name=document.createElement('span');name.textContent=traitNames[i];let val=document.createElement('b');val.textContent=Math.round(avg)+'%';h.append(name,val);let bar=document.createElement('div');bar.className='traitbar';let fill=document.createElement('div');fill.style.width=avg+'%';bar.append(fill);d.append(h,bar);$('traits').append(d)});
+window.scrollTo(0,0);
+}
+$('copy').onclick=async()=>{let txt=`THE MIRROR TEST\nKết quả: ${$('title').textContent}\nĐiểm tự đánh giá: ${$('score').textContent}\n${$('verdict').textContent}\n${$('reflection').textContent}`;try{await navigator.clipboard.writeText(txt);$('copy').textContent='Đã sao chép!'}catch(e){prompt('Sao chép kết quả:',txt)}};
+$('restart').onclick=()=>{idx=0;answers=Array(10).fill(null);$('result').classList.add('hidden');$('home').classList.remove('hidden');$('agree').checked=false;$('start').disabled=true;window.scrollTo(0,0)};
+</script>
+</body>
+</html>
